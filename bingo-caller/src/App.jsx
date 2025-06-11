@@ -10,6 +10,8 @@ function App() {
   const [darkMode, setDarkMode] = useState(false);
   const [voices, setVoices] = useState([]);
   const [selectedVoice, setSelectedVoice] = useState(null);
+ const [showPopup, setShowPopup] = useState(false);
+  const [popupMessage, setPopupMessage] = useState("");
 
   // Load available voices - memoized to prevent unnecessary re-renders
   const loadVoices = useCallback(() => {
@@ -32,6 +34,12 @@ function App() {
     };
   }, [loadVoices]);
 
+   const showGameOverPopup = useCallback(() => {
+      setPopupMessage("All numbers have been called!");
+      setShowPopup(true);
+      setIsAutoCalling(false);
+    }, []);
+
   // Memoized number generation
   const generateBingoNumber = useCallback(() => {
     const availableNumbers = [];
@@ -41,12 +49,12 @@ function App() {
       }
     }
     if (availableNumbers.length === 0) {
-      alert("All numbers have been called!");
+      showGameOverPopup();
       return null;
     }
     const randomIndex = Math.floor(Math.random() * availableNumbers.length);
     return availableNumbers[randomIndex];
-  }, [calledNumbers]);
+  }, [calledNumbers, showGameOverPopup]);
 
   // Memoized number calling
   const callNumber = useCallback(() => {
@@ -86,7 +94,9 @@ function App() {
         : "O";
     return `${letter} ${number}`;
   };
-
+ const closePopup = () => {
+    setShowPopup(false);
+  };
   const toggleAutoCall = useCallback(() => {
     setIsAutoCalling((prev) => !prev);
   }, []);
@@ -249,6 +259,21 @@ function App() {
             </div>
           </div>
         </main>
+         {showPopup && (
+          <div className="popup-overlay">
+            <div className="popup-content">
+              <h3 className="popup-title">Game Over</h3>
+              <p className="popup-message">{popupMessage}</p>
+              <button 
+                onClick={closePopup}
+                className="popup-button"
+                autoFocus
+              >
+                OK
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
