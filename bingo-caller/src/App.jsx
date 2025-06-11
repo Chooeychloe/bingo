@@ -132,7 +132,16 @@ function App() {
     <div className="app-container">
       <div className={`bingo-caller ${darkMode ? "dark" : "light"}`}>
         <header>
-          <h1>Bingo Caller</h1>
+          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+            <h1 style={{ fontFamily:"monospace",color: "red" }}>Dhan's</h1>
+
+            <img
+              src="/vite.svg"
+              alt="Bingo Logo"
+              style={{ width: "170px", height: "170px" }}
+            />
+            <h1 style={{ fontFamily:"monospace",color: "red" }}>Caller</h1>
+          </div>
           <button onClick={toggleTheme} className="theme-toggle">
             {darkMode ? "☀️ Light Mode" : "🌙 Dark Mode"}
           </button>
